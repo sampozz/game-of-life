@@ -14,16 +14,16 @@ class GameOfLife():
     def create_world(self):
         self.world = [
             [
-                bool(randint(0, 1)) for x in range(self.width)
-            ] for y in range(self.height)
+                bool(randint(0, 1)) for y in range(self.width)
+            ] for x in range(self.height)
         ]
 
 
     def goto_next_gen(self):
         ''' Just one step '''
         next_gen = deepcopy(self.world)
-        for y in range(self.width):
-            for x in range(self.height):
+        for x in range(self.height):
+            for y in range(self.width):
                 next_gen[x][y] = self.live_or_die(x, y)                    
         self.world = deepcopy(next_gen)
 
@@ -32,9 +32,9 @@ class GameOfLife():
         ''' True = live, False = die '''
         is_alive = self.world[x][y]
         count_alive = -1 if is_alive else 0
-        for i in range(-1, 2):
-            for j in range(-1, 2):
-                if self.world[(x + i) % self.height][(y + j) % self.width]:
+        for i in range(x-1, x+2):
+            for j in range(y-1, y+2):
+                if self.world[i % self.height][j % self.width]:
                     count_alive += 1
         if count_alive == 3 or (is_alive and count_alive == 2):
             return True
